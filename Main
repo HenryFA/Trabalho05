@@ -1,0 +1,105 @@
+# Pedro Henrique Faria Amadeu
+
+#ENUNCIADO
+# Sua tarefa será  gerar a matriz termo documento, dos documentos recuperados da internet e 
+# imprimir esta matriz na tela. Para tanto: 
+#   a) Considere que todas as listas de sentenças devem ser transformadas em listas de vetores, 
+# onde cada item será uma das palavras da sentença. 
+#   b) Todos  os  vetores  devem  ser  unidos  em  um  corpus  único  formando  uma  lista  de  vetores, 
+# onde cada item será um lexema.  
+#   c) Este único corpus será usado para gerar o vocabulário. 
+#   d) O  resultado  esperado  será  uma  matriz  termo  documento  criada  a  partir  da  aplicação  da 
+# técnica bag of Words em todo o corpus.  
+
+
+from bs4 import BeautifulSoup
+import requests
+
+sentences1=[]
+sentences2=[]
+sentences3=[]
+sentences4=[]
+sentences5=[]
+
+
+
+def frequencia(sentences, vocabulario):
+  sentence_matriz = []
+  for n in vocabulario:
+    ocorrencia = 0
+    for sentence in sentences:
+      if sentence == n:
+        ocorrencia += 1
+    sentence_matriz.append(ocorrencia)
+
+  return sentence_matriz
+
+#Primeiro site
+
+site1 = "https://en.wikipedia.org/wiki/Natural_language_processing"
+html1 = requests.get(site1)
+fonte1 = BeautifulSoup(html1.text,"html.parser")
+for sentences in fonte1.find_all("p"):  
+    sentences1.append(sentences.get_text())
+
+
+###########################################################################################################
+
+#Segundo site
+
+site2 = "https://www.ibm.com/cloud/learn/natural-language-processing"
+html2 = requests.get(site2)
+fonte2 = BeautifulSoup(html2.text,"html.parser")
+for sentences in fonte2.find_all("p"):  
+    sentences2.append(sentences.get_text())
+
+###########################################################################################################
+
+#Terceiro site
+
+site3 = "https://www.techtarget.com/searchenterpriseai/definition/natural-language-processing-NLP"
+html3 = requests.get(site3)
+fonte3 = BeautifulSoup(html3.text,"html.parser")
+for sentences in fonte3.find_all("p"):  
+    sentences3.append(sentences.get_text())
+
+
+###########################################################################################################
+
+#Quarto site
+
+site4 = "https://www.coursera.org/specializations/natural-language-processing"
+html4 = requests.get(site4)
+fonte4 = BeautifulSoup(html4.text,"html.parser")
+for sentences in fonte4.find_all("p"):  
+    sentences4.append(sentences.get_text())
+
+
+###########################################################################################################
+
+#Quinto site
+
+site5 = "https://www.datarobot.com/blog/what-is-natural-language-processing-introduction-to-nlp/"
+html5 = requests.get(site5)
+fonte5 = BeautifulSoup(html5.text,"html.parser")
+for sentences in fonte5.find_all("p"):  
+    sentences5.append(sentences.get_text()) 
+
+
+#todos os sites em um "vocabulario" e ver frequencia
+vocabulario = list(set(sentences1 + sentences2 + sentences3 + sentences4 + sentences5))
+
+  
+matriz=[vocabulario]
+matriz.append(frequencia(sentences1, vocabulario))
+matriz.append(frequencia(sentences2, vocabulario))
+matriz.append(frequencia(sentences3, vocabulario))
+matriz.append(frequencia(sentences4, vocabulario)) 
+matriz.append(frequencia(sentences5, vocabulario))
+
+print("Vocabulario dos sites encontrados: ",vocabulario)
+print("Frequencia das palavras do site 1: ",matriz[1])
+print("Frequencia das palavras do site 2: ",matriz[2])
+print("Frequencia das palavras do site 3: ",matriz[3])
+print("Frequencia das palavras do site 4: ",matriz[4])
+print("Frequencia das palavras do site 5: ",matriz[5])
